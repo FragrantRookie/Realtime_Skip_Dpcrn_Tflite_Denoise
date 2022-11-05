@@ -1,16 +1,16 @@
-#Realtime_Skip_Dpcrn_Tflite_Denoise
+# Realtime_Skip_Dpcrn_Tflite_Denoise
 This project is C++ (Microsoft Visual Studio Professional 2019) port of dpcrn_tflite denoise.
 I've included dependencies for tflite, fft in Windows.
 You can test project using single channel 16Khz wav files.
 
-#USAGE
+# USAGE
 Modify the paths to int_file and out_file for the Main function.
 
-#TIPS
+# TIPS
 I've tested project on Windows 10 (i5-8265U) environment and got realtime performance.
 STAR if project is helpful, welcome pull requests and issue.
 
-#REFERENCES
+# REFERENCES
 
 1.SKIP-DPCRN (https://github.com/Le-Xiaohuai-speech/SKIP-DPCRN) (Great thanks to Le-Xiaohuai-speech)
 
