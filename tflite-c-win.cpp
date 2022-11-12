@@ -62,14 +62,12 @@ void f32_16khz_to_s16_16khz(float* in, short* out, int count)
     }
 }
 
-void calc_mag_phase(vector<cpx_type> fft_res, float* in_mag, float* in_phase, float* inp, int count)
+void calc_mag_phase(vector<cpx_type> fft_res, float* inp, int count)
 {
     for (int i = 0; i < count; i++)
     {
-        in_mag[i] = fft_res[i].real();
-        in_phase[i] = fft_res[i].imag();
-        inp[i * 3] = in_mag[i];
-        inp[i * 3 + 1] = in_phase[i];
+        inp[i * 3] = fft_res[i].real();
+        inp[i * 3 + 1] = fft_res[i].imag();
         inp[i * 3 + 2] = 2 * log(sqrtf(fft_res[i].real() * fft_res[i].real() + fft_res[i].imag() * fft_res[i].imag()));
     }
 }
@@ -108,14 +106,11 @@ void tflite_destroy(trg_engine* engine)
 void tflite_infer(trg_engine* engine)
 {
 
-    float in_mag[block_len / 2 + 1] = { 0 };
-    float in_phase[block_len / 2 + 1] = { 0 };
     float inp[(block_len / 2 + 1) * 3] = { 0 };
     float estimated_block[block_len];
 
     double fft_in[block_len];
     vector<cpx_type> fft_res(block_len);
-    vector<cpx_type> spec(block_len);
 
     shape_t shape;
     shape.push_back(block_len);
@@ -133,7 +128,7 @@ void tflite_infer(trg_engine* engine)
 
     r2c(shape, stridel, strideo, axes, FORWARD, fft_in, fft_res.data(), 1.0);
 
-    calc_mag_phase(fft_res, in_mag, in_phase, inp, fft_out_size);
+    calc_mag_phase(fft_res, inp, fft_out_size);
 
     memcpy(engine->input_details_1[0]->data.f, inp, fft_out_size * 3 * sizeof(float));
 
